@@ -26,4 +26,4 @@ pip-log.txt
 .mr.developer.cfg
 
 #submodule files I need to remove
-changevimlinks.py
+changevimsymlinks.py
