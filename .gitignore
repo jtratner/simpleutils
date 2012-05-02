@@ -11,6 +11,17 @@ var
 sdist
 develop-eggs
 .installed.cfg
+.ropeproject
+
+# ipython logs
+ipython_log.py
+ipython_logs.py
+
+# bytecompiled python
+*.pyc
+
+# swap files
+*.swp
 
 # Installer logs
 pip-log.txt

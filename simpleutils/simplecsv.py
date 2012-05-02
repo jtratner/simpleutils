@@ -28,6 +28,25 @@ from simpletime import pretty_time
 from simplesets import get_all_keys
 import sys
 
+def get_fileobject(filename, mode='wb', ext='.csv',prefix=''):
+    """ returns a fileobject for given input.
+    filename can be: path - str to a path on system
+                     fileobject - in which case just returned
+                    None - uses prettytime to make
+    mode - mode for open
+    prefix,ext - added to beginning or end of prettytime"""
+    # if it's a string, get the path
+    if isinstance(filename,str):
+        f = open(filename,mode)
+    # if it is not None, assume it's a file object
+    elif filename is not None:
+        f = filename
+    # otherwise just use default
+    else:
+        filename = prefix+pretty_time()+ext
+        f = open(filename,mode)
+    return f
+
 def convert_dict_to_csv(
         lstofdicts,
         filename = None,
@@ -40,11 +59,7 @@ def convert_dict_to_csv(
     csv.DictReader(csvfile[, fieldnames=None[, restkey=None[, restval=None[, dialect='excel'[, *args, **kwds]]]]])
     Use keyword arguments so you don't have to worry about position"""
     # store defaults in kwargs
-    if filename:
-        f = open(filename,'wb')
-    else:
-        filename = pretty_time()+'.csv'
-        f = open(filename,'wb')
+    f = get_fileobject(filename,mode='wb',ext='.csv')
     try:
         if fieldnames:
             # if fieldnames, store them
@@ -98,18 +113,13 @@ def convert_list_to_csv(
         (becomes first row of csv) 
     All args passed to csv, args with None are written for convenient
     reminder.
-    Default filename is pretty_time()"""
+    Default filename is pretty_time(), filename can also be a fileobject"""
     # store defaults in kwargs
     if delimiter is not None: kwargs['delimiter'] = delimiter
     if quotechar is not None: kwargs['quotechar'] = quotechar
     if quoting is not None: kwargs['quoting'] = quoting
-    
-    # open up a file to write with
-    if filename:
-        f = open(filename,'wb')
-    else:
-        filename = pretty_time()+'.csv'
-        f = open(filename,'wb')
+    # get file object
+    f = get_fileobject(filename,mode='wb',ext='.csv')
     # write with csvwriter
     try:
         mycsvwriter =  csv.writer(f,**kwargs)
@@ -140,7 +150,7 @@ def read_csv_to_list(
     if delimiter is not None: kwargs['delimiter'] = delimiter
     if quotechar is not None: kwargs['quotechar'] = quotechar
     
-    f = open(path,'rb')
+    f = get_fileobject(path,mode='rb')
     
     try:
         mycsvreader = csv.reader(f,**kwargs)
@@ -161,12 +171,13 @@ def read_csv_to_dict(
         **kwargs):
     """ reads the csv at 'path' and outputs a dict with keywords from the 
     firstline (so, the column titles) any keywords for csvreader can be passed 
-    through if desired)
+    through if desired).
+    path can be fileobject or system path
     Keywords are listed for convenience, only non-None are kept"""
     kwargs['dialect'] = dialect
     if not delimiter is None: kwargs['delimiter'] = delimiter
     if not quotechar is None: kwargs['quotechar'] = quotechar
-    f = open(path,'rb')
+    f = get_fileobject(path,mode='rb')
     try:
         mycsvreader = csv.DictReader(f,**kwargs)
         return [x for x in mycsvreader]
