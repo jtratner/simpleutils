@@ -105,7 +105,7 @@ def rm_symlink(path):
     if os.path.islink(path):
         print "Removing path %r" % path
         os.remove(path)
-        return T
+        return True
     else:
         return False
 
