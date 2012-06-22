@@ -44,26 +44,30 @@ def replace_pattern(mystr, pattern=' ', replacement=None):
     return newstr
 
 
-def replace_tabs_with_spaces(mystr, tabchar='\t', numspaces=4):
+def replace_tabs_with_spaces(mystr, tabchar='\t', numspaces=4, verbose=False, filename='file'):
     """"replaces tab characters at the beginning of lines with 4 spaces
     (fixing tab/space inconsistencies in documents, replaces tab
             characters even at beginning of triple quote lines """
     # split into lines to work line by line
     spaces = ' ' * numspaces
     linelist = mystr.splitlines()
+    num_tabs = 0
     for i in range(0, len(linelist)):
         # keep replacing tabs with spaces until no more tabs at
         # beginning of line (usually only 0-4 tabs max at beginning of
         # line, so faster than any other method while still preserving
         # internal tabs
-        print "Starting to replace tab chars on line: %d" % i
-        print linelist[i]
         j = 0
         line = linelist[i]
         while line.startswith(tabchar):
             line = line.replace(tabchar, '', 1)
             j = j + 1
-            print "num tab chars found: %d" % j
-        linelist[i] = spaces * j + line
-        print linelist[i]
+        if j:
+            linelist[i] = spaces * j + line
+            num_tabs += j
+    if verbose:
+        if num_tabs:
+            print("Found {tabs} tab characters total in {filename}".format(tabs=num_tabs, filename=filename))
+        else:
+            print("No tab characters requiring replacement found")
     return os.linesep.join(linelist)

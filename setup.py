@@ -13,7 +13,7 @@ config = {
     'version': '0.1',
     'install_requires': [],
     'packages': ['simpleutils'],
-    'scripts': [],
+    'scripts': ['bin/replace-tabs-with-spaces'],
     'name': 'simpleutils',
     'license': 'GPL license v3.0'
 }
