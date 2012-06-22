@@ -25,7 +25,7 @@ def simpledec(decorator=None, f=None, *args, **kwargs):
                                             f.__name__, meta_comp(f),decorator.__name__,meta_comp(decorated_f)))
     nt.assert_dict_contains_subset(
             meta_comp(decorator),
-            meta_comp(sd_dec), 
+            meta_comp(sd_dec),
             msg = "simple_decorator on decorator fn %s failed" % decorator.__name__)
 
 
@@ -61,7 +61,7 @@ def simpledec_test():
     # try f for all decorators
     for decorator in decorator_set:
         for f in function_set:
-            yield simpledec, decorator, decorator
+            yield simpledec, decorator, f
 
 # exception producing decorators
 
@@ -119,7 +119,7 @@ def produce_exceptions(exception = None):
 
 def test_multiple_exception_catchign():
     for e in TypeError,ValueError,AttributeError,OSError:
-        yield produce_exceptions(e)
+        yield produce_exceptions, e
 
 @nt.raises(TypeError)
 def test_no_call():

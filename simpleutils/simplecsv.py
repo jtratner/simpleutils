@@ -28,6 +28,17 @@ from simpletime import pretty_time
 from simplesets import get_all_keys
 import sys
 
+def make_filename(filename=None,ext='', prefix='', name_gen=pretty_time,
+        append_time = False):
+    if filename is None: 
+        if append_time and name_gen is pretty_time:
+            filename = ''
+        else:
+            filename = name_gen()
+    if append_time:
+        filename = filename + pretty_time()
+    return prefix+filename+ext
+
 def get_fileobject(filename, mode='wb', ext='.csv',prefix=''):
     """ returns a fileobject for given input.
     filename can be: path - str to a path on system
@@ -43,7 +54,7 @@ def get_fileobject(filename, mode='wb', ext='.csv',prefix=''):
         f = filename
     # otherwise just use default
     else:
-        filename = prefix+pretty_time()+ext
+        filename = make_filename(filename=filename, ext=ext, prefix=prefix)
         f = open(filename,mode)
     return f
 
@@ -76,11 +87,11 @@ def write_dict(
             try:
                 # try to get fieldnames by getting all keys within lstofdicts
                 names = sorted(list(get_all_keys(lstofdicts)))
-                print "No fieldnames entered, getting all keys:\nKeys: %r" % names
+                print("No fieldnames entered, getting all keys:\nKeys: {!r}".format(names))
             except Exception as inst:
-                print "Couldn't grab all keys...probably won't work."
-                print "MESSAGE: ", inst.message
-                print "ARGS: ",inst.args
+                print("Couldn't grab all keys...probably won't work.")
+                print("MESSAGE: {!r}".format(inst.MESSAGE))
+                print("ARGS: {!r}".format(inst.args))
                 names = lstofdicts[0].keys()
         # write fieldnames as first row
         csvwriter = csv.writer(f, **kwargs)
@@ -94,7 +105,7 @@ def write_dict(
             i += 1
             sys.stdout.write('.')
             csvDict.writerow(elem)
-        print "\nWrote %d items" % i
+        print ("\nWrote {!d} items".format(i))
     except Exception as inst:
         print inst.message
         print inst.args
