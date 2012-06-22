@@ -48,6 +48,11 @@ def get_fileobject(filename, mode='wb', ext='.csv',prefix=''):
     return f
 
 def convert_dict_to_csv(
+        *args, **kwargs):
+    """ Deprecated, wrapper for simplecsv.write_dict"""
+    return write_dict(*args, **kwargs)
+
+def write_dict(
         lstofdicts,
         filename = None,
         header_row = None,
@@ -97,7 +102,11 @@ def convert_dict_to_csv(
         f.close()
         return filename
 
-def convert_list_to_csv(
+def convert_list_to_csv(*args, **kwargs):
+    """ deprecated, wrapper for write_list"""
+    return write_list(*args, **kwargs)
+
+def write_list(
         lst,
         filename = None,
         header_row = 0,
@@ -124,18 +133,22 @@ def convert_list_to_csv(
     try:
         mycsvwriter =  csv.writer(f,**kwargs)
         mycsvwriter.writerow(lst.pop(header_row))
-        sys.stdout.write("Writing rows")
+        print "Writing rows",
         i = 0
         for elem in lst:
             mycsvwriter.writerow(elem)
-            sys.stdout.write('.')
+            print ".",
             i += 1
-        print "\nWrote %d rows." % i
+        print("\nWrote {!d} rows.".format(i))
     finally:
         f.close()
         return filename
         
-def read_csv_to_list(
+def read_csv_to_list(*args, **kwargs):
+    """deprecated, wrapper for read_to_list"""
+    return read_to_list(*args, **kwargs)
+
+def read_to_list(
         path,
         dialect='excel',
         delimiter=None,
@@ -162,7 +175,11 @@ def read_csv_to_list(
     finally:
         f.close()
 
-def read_csv_to_dict(
+
+def read_csv_to_dict(*args, **kwargs):
+    """deprecated, wrapper for read_to_dict"""
+    return read_to_dict(*args, **kwargs)
+def read_to_dict(
         path,
         dialect='excel',
         delimiter=None,
