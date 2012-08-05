@@ -226,16 +226,17 @@ def basic_read_sheet(filename=None, workbook=None, sheet_name='', preserve_style
     elif workbook:
         try:
             wb = workbook.parent
-            ws = workbook
         except AttributeError:
             wb = workbook
-            ws = (wb.get_sheet_by_name(sheet_name) or wb.get_active_sheet())
+        ws = (wb.get_sheet_by_name(sheet_name) or wb.get_active_sheet())
     max_row = ws.get_highest_row()
     max_col = ws.get_highest_column()
     default_style = Style()
+    style_dict = {"default":default_style}
     if preserve_styles:
-        style_dict = dict((cell.get_coordinate(), cell.style) for row in
-                ws.rows for cell in row 
-                if cell is not None and cell.style != Style())
-    output = [[cell.value for cell in rows] for row in ws.rows]
-    # somehow check to see if first row are titles or not
+        style_dict.update(dict((cell.get_coordinate(), cell.style) for row in
+                ws.rows for cell in row
+                if cell is not None and cell.style != default_style))
+    output = [[cell.value for cell in row] for row in ws.rows]
+    #TODO: somehow check to see if first row are titles or not
+    return output, style_dict

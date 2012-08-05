@@ -2,7 +2,7 @@
 simpletime - simple utilities to handle common tasks with time
 """
 
-import time
+import datetime
 
 def pretty_time(delimiter = '_',colon_sub = '-'):
     """Returns a str of the local time, nicely formatted, with the specific time in nice str
