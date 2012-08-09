@@ -118,3 +118,17 @@ def dump_args(func):
 
     return echo_func
 
+@simple_decorator
+def memo(f):
+    """Decorator that caches return value for each fxn call and looks it up next time"""
+    cache = {}
+    def _f(*args):
+        try:
+            cached = cache[args]
+            return cached
+        except KeyError:
+            cache[args] = result = f(*args)
+            return result
+        except TypeError:
+            return f(args)
+    return _f

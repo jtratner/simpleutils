@@ -94,19 +94,5 @@ def special_print(*args):
     indent = special_trace.level * special_trace.indent
     print indent + args.replace("\n", "\n" + indent)
 
-@decorator
-def memo(f):
-    """Decorator that caches return value for each fxn call and looks it up next time"""
-    cache = {}
-    def _f(*args):
-        try:
-            cached = cache[args]
-            return cached
-        except KeyError:
-            cache[args] = result = f(*args)
-            return result
-        except TypeError:
-            return f(args)
-    return _f
 
 

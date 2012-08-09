@@ -25,13 +25,18 @@ def make_filename(filename=None, ext='.xlsx', prefix='', **kwargs):
             append_time=append_time)
 
 def get_worksheet(workbook=None, sheet_name=None):
-    """ returns a tuple of (workbook, worksheet) for given workbook and sheet_name
+    """
+    :returns: a tuple of (workbook, worksheet) for given workbook and sheet_name
+
     Parameters:
-        workbook - a workbook object (supports both
+
+    :param workbook: a workbook object (supports both
         get_sheet_by_name and add_sheet command), if None, creates one
-        sheet_name - the sheet to be created or returned.
-                    if sheet_name is None, uses default name from openpyxl
-                        (generally "Sheet#") """
+    :param sheet_name: the sheet to be created or returned.
+        if sheet_name is None, uses default name from openpyxl
+        (generally "Sheet#") 
+
+                        """
     try:
        active_ws=workbook.get_active_sheet()
        del active_ws
@@ -161,7 +166,14 @@ def _write_spreadsheet(sheet, data, row_styles, col_styles,
 
 def basic_read_sheet(filename=None, workbook=None, sheet_name='', preserve_styles=False):
     """ reads a sheet from a workbook or file (workbook can either be a
-    workbook or worksheet)"""
+    workbook or worksheet).
+
+    .. caution:: Rough function!
+
+        This is still really rough, so be careful when using.
+
+    """
+    #TODO: make this use get_fileobject for filename
     if (filename is None and workbook is None) or (filename and workbook):
         raise ValueError("Need to provide *either* a filename or a "
                 "Workbook/Worksheet object")

@@ -1,0 +1,153 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>debugging utils &mdash; jtratner&#39;s simpleutils 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="jtratner&#39;s simpleutils 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="csv utilities" href="simplecsv.html" />
+    <link rel="prev" title="Welcome to jtratner’s simpleutils’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simplecsv.html" title="csv utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to jtratner’s simpleutils’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-simpleutils.simpledebug">
+<span id="debugging-utils"></span><h1>debugging utils<a class="headerlink" href="#module-simpleutils.simpledebug" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="simpleutils.simpledebug.decorator">
+<tt class="descclassname">simpleutils.simpledebug.</tt><tt class="descname">decorator</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simpledebug.html#decorator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simpledebug.decorator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make function d a decorator: d wraps a function fn.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simpledebug.memo">
+<tt class="descclassname">simpleutils.simpledebug.</tt><tt class="descname">memo</tt><big>(</big><em>fn</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simpledebug.html#memo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simpledebug.memo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator that caches return value for each fxn call and looks it up next time</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simpledebug.special_print">
+<tt class="descclassname">simpleutils.simpledebug.</tt><tt class="descname">special_print</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simpledebug.html#special_print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simpledebug.special_print" title="Permalink to this definition">¶</a></dt>
+<dd><p>print from a function as normal, but if using special_trace,
+let&#8217;s you print text with the same indent as trace (making it easier
+to see what belongs to what)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simpledebug.special_trace">
+<tt class="descclassname">simpleutils.simpledebug.</tt><tt class="descname">special_trace</tt><big>(</big><em>ignore_args=None</em>, <em>ignore_kwargs=None</em>, <em>pretty=True</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simpledebug.html#special_trace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simpledebug.special_trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator factory. Similar to standard trace, except that this trace allows function
+to ignore certain arguments. And set special tracing</p>
+<p>parameters:</p>
+<blockquote>
+<div>ignore_args - list of ints...positions in input args to ignore
+ignore_kwargs - list of keys; keyword arguments to ignore
+pretty - whether to pretty print signature</div></blockquote>
+<p>NOTE: if you just want pretty print can just use &#64;special_trace and it will work
+exactly the same as trace</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to jtratner&#8217;s simpleutils&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="simplecsv.html"
+                        title="next chapter">csv utilities</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/simpledebug.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simplecsv.html" title="csv utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to jtratner’s simpleutils’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jeffrey Tratner.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

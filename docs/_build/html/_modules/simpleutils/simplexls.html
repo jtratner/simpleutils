@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>simpleutils.simplexls &mdash; jtratner&#39;s simpleutils 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="jtratner&#39;s simpleutils 0.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for simpleutils.simplexls</h1><div class="highlight"><pre>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">openpyxl</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s">&quot;Creating Excel files requires openpyxl, please install it!&quot;</span><span class="p">)</span>
+
+
+<span class="c"># get Mapping ABC for:</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="c"># python3</span>
+    <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c"># or python 2.x</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Mapping</span>
+
+<span class="kn">from</span> <span class="nn">.simpledict</span> <span class="kn">import</span> <span class="n">dicts_to_list</span><span class="p">,</span> <span class="n">list_to_dict</span>
+<span class="kn">import</span> <span class="nn">simpleutils.simplecsv</span> <span class="kn">as</span> <span class="nn">sc</span>
+<span class="kn">from</span> <span class="nn">.simplesets</span> <span class="kn">import</span> <span class="n">get_all_keys</span>
+
+<span class="n">Style</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">Style</span>
+
+<div class="viewcode-block" id="make_filename"><a class="viewcode-back" href="../../simplexls.html#simpleutils.simplexls.make_filename">[docs]</a><span class="k">def</span> <span class="nf">make_filename</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="s">&#39;.xlsx&#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; excel-specific wrapper for make_filename&quot;&quot;&quot;</span>
+    <span class="n">append_time</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;append_time&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">make_filename</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">ext</span><span class="o">=</span><span class="n">ext</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span>
+            <span class="n">append_time</span><span class="o">=</span><span class="n">append_time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="get_worksheet"><a class="viewcode-back" href="../../simplexls.html#simpleutils.simplexls.get_worksheet">[docs]</a><span class="k">def</span> <span class="nf">get_worksheet</span><span class="p">(</span><span class="n">workbook</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :returns: a tuple of (workbook, worksheet) for given workbook and sheet_name</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    :param workbook: a workbook object (supports both</span>
+<span class="sd">        get_sheet_by_name and add_sheet command), if None, creates one</span>
+<span class="sd">    :param sheet_name: the sheet to be created or returned.</span>
+<span class="sd">        if sheet_name is None, uses default name from openpyxl</span>
+<span class="sd">        (generally &quot;Sheet#&quot;) </span>
+
+<span class="sd">                        &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+       <span class="n">active_ws</span><span class="o">=</span><span class="n">workbook</span><span class="o">.</span><span class="n">get_active_sheet</span><span class="p">()</span>
+       <span class="k">del</span> <span class="n">active_ws</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">workbook</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">Workbook</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">sheet_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">get_sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ws</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">ws</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">create_sheet</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">sheet_name</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">create_sheet</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ws</span>
+
+</div>
+<div class="viewcode-block" id="write_dict"><a class="viewcode-back" href="../../simplexls.html#simpleutils.simplexls.write_dict">[docs]</a><span class="k">def</span> <span class="nf">write_dict</span><span class="p">(</span>
+        <span class="n">lstofdicts</span><span class="p">,</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">col_titles</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">row_styles</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">col_styles</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">style_dict</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">sheet_name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">workbook</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">col_sort_key</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">ignore_keys</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">default_style</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Takes a given list of dicts and converts it to an excel file,</span>
+<span class="sd">    using similar settings to write_dict in csv.</span>
+
+<span class="sd">    Special Parameters:</span>
+
+<span class="sd">    :param row_styles: sequence callable by row integer</span>
+<span class="sd">    :param col_styles: sequence callable by column integer: (where &#39;A&#39; --&gt; &#39;0&#39;)</span>
+<span class="sd">    :param style_dict: mapping from cell names (&#39;A1&#39;) or cell pos((0,1)) to a</span>
+<span class="sd">          format object</span>
+<span class="sd">    :param workbook: either an openpyxl workbook object or a string denoting the</span>
+<span class="sd">          desired workbook title.</span>
+<span class="sd">    :param sheet_name: string - name of sheet in which to store data (if sheet</span>
+<span class="sd">          name already exists, it will be overwritten, otherwise one will be</span>
+<span class="sd">          created)</span>
+<span class="sd">    :param col_sort_key: key function for sorting column names for eventual output</span>
+<span class="sd">    :param col_titles: list of column titles...if len(col_titles) &lt; list of</span>
+<span class="sd">          fieldnames found, remaining fieldnames will be appended to column titles</span>
+<span class="sd">    :param ignore_keys: keys to ignore in dicts (these will not be written to</span>
+<span class="sd">          file)</span>
+<span class="sd">    :param append_time: (kwarg only!) - append_time - if True,</span>
+<span class="sd">          :func:`write_dict` will put the header_row as the first row (or, if</span>
+<span class="sd">          one is not given, generate one, so be aware of this)</span>
+
+<span class="sd">    for each entry, :func:`write_dict` will lookup to see if there exists a</span>
+<span class="sd">    row_style or a column_style corresponding to that entry returns</span>
+<span class="sd">    worksheet created (note can get workbook from worksheet by:</span>
+<span class="sd">    worksheet.parent)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ws</span> <span class="o">=</span> <span class="n">get_worksheet</span><span class="p">(</span><span class="n">workbook</span><span class="p">,</span> <span class="n">sheet_name</span><span class="p">)</span>
+    <span class="n">fieldnames</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dicts_to_list</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">,</span>
+                                            <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">,</span> <span class="n">key_sorter</span><span class="o">=</span><span class="n">col_sort_key</span><span class="p">,</span>
+                                            <span class="n">ignore_keys</span><span class="o">=</span><span class="n">ignore_keys</span><span class="p">)</span>
+    <span class="c"># coerce fieldnames into strings so they can be used as Excel headers</span>
+    <span class="k">del</span> <span class="n">lstofdicts</span>
+    <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">fieldnames</span><span class="p">]</span><span class="o">+</span><span class="n">data</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Will write first row as header names: {!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">use_styles</span> <span class="o">=</span> <span class="nb">any</span><span class="p">((</span><span class="n">row_styles</span><span class="p">,</span> <span class="n">col_styles</span><span class="p">,</span> <span class="n">style_dict</span><span class="p">,</span> <span class="n">default_style</span><span class="p">))</span>
+    <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">,</span>
+              <span class="n">row_styles</span> <span class="o">=</span> <span class="n">row_styles</span> <span class="ow">or</span> <span class="p">{},</span>
+              <span class="n">col_styles</span> <span class="o">=</span> <span class="n">col_styles</span> <span class="ow">or</span> <span class="p">{},</span>
+              <span class="n">default_style</span> <span class="o">=</span> <span class="n">default_style</span> <span class="ow">or</span> <span class="n">Style</span><span class="p">(),</span>
+              <span class="n">use_styles</span> <span class="o">=</span> <span class="n">use_styles</span><span class="p">,</span>
+              <span class="n">style_dict</span> <span class="o">=</span> <span class="n">style_dict</span> <span class="ow">or</span> <span class="p">{},</span>
+              <span class="n">filename</span> <span class="o">=</span> <span class="n">make_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+              <span class="n">sheet</span> <span class="o">=</span> <span class="n">ws</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">fieldnames</span>
+    <span class="n">_write_spreadsheet</span><span class="p">(</span><span class="o">**</span><span class="n">settings</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ws</span>
+
+
+</div>
+<span class="k">def</span> <span class="nf">join_styles</span><span class="p">(</span><span class="n">default_style</span><span class="p">,</span> <span class="n">row_style</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">col_style</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="n">row_style</span> <span class="ow">or</span> <span class="n">col_style</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">default_style</span>
+    <span class="k">if</span> <span class="n">row_style</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">col_style</span>
+    <span class="k">elif</span> <span class="n">col_style</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">row_style</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">style</span> <span class="o">=</span> <span class="n">Style</span><span class="p">()</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">row_style</span><span class="p">)</span>
+        <span class="n">style</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">col_style</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">style</span>
+
+<span class="k">def</span> <span class="nf">_write_spreadsheet</span><span class="p">(</span><span class="n">sheet</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">row_styles</span><span class="p">,</span> <span class="n">col_styles</span><span class="p">,</span>
+        <span class="n">style_dict</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">default_style</span><span class="p">,</span> <span class="n">use_styles</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; helper function for writing spreadsheets, better to call typed</span>
+<span class="sd">    functions directly. Additionally, best to call this function with keyword</span>
+<span class="sd">    arguments, so no worries about ordering, etc). Will fail if any parameter</span>
+<span class="sd">    given is None&quot;&quot;&quot;</span>
+    <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">print</span> <span class="s">&quot;Storing values&quot;</span><span class="p">,</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">cell</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">print</span> <span class="s">&quot;.&quot;</span><span class="p">,</span>
+            <span class="n">sheet</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">cell</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Successfully stored {} cells&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctr</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">use_styles</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Storing styles&quot;</span><span class="p">,</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">row_styles</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)):</span>
+            <span class="n">row_styles</span> <span class="o">=</span> <span class="n">list_to_dicts</span><span class="p">(</span><span class="n">row_styles</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">col_styles</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)):</span>
+            <span class="n">col_styles</span> <span class="o">=</span> <span class="n">list_to_dicts</span><span class="p">(</span><span class="n">col_styles</span><span class="p">)</span>
+        <span class="n">join_styles</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">:</span> <span class="n">join_styles</span><span class="p">(</span><span class="n">default_style</span><span class="p">,</span> <span class="n">row_style</span><span class="o">=</span><span class="n">row</span><span class="p">,</span>
+                <span class="n">col_style</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">ctr</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">row</span><span class="p">)):</span>
+                <span class="n">ctr</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">print</span> <span class="s">&quot;.&quot;</span><span class="p">,</span>
+                <span class="n">sheet</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span><span class="o">.</span><span class="n">style</span> <span class="o">=</span> <span class="p">(</span><span class="n">style_dict</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">))</span>
+                                      <span class="ow">or</span> <span class="n">join_styles</span><span class="p">(</span><span class="n">row_styles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">),</span>
+                                                    <span class="n">col_styles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">j</span><span class="p">)))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Successfully stored style in {} cells&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctr</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Saving workbook.&quot;</span><span class="p">)</span>
+    <span class="n">sheet</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+<div class="viewcode-block" id="basic_read_sheet"><a class="viewcode-back" href="../../simplexls.html#simpleutils.simplexls.basic_read_sheet">[docs]</a><span class="k">def</span> <span class="nf">basic_read_sheet</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">workbook</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">preserve_styles</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; reads a sheet from a workbook or file (workbook can either be a</span>
+<span class="sd">    workbook or worksheet).</span>
+
+<span class="sd">    .. caution:: Rough function!</span>
+
+<span class="sd">        This is still really rough, so be careful when using.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#TODO: make this use get_fileobject for filename</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">workbook</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">filename</span> <span class="ow">and</span> <span class="n">workbook</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Need to provide *either* a filename or a &quot;</span>
+                <span class="s">&quot;Workbook/Worksheet object&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="p">:</span>
+        <span class="n">wb</span> <span class="o">=</span> <span class="n">openpyxl</span><span class="o">.</span><span class="n">load_workbook</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="p">(</span><span class="n">wb</span><span class="o">.</span><span class="n">get_sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">wb</span><span class="o">.</span><span class="n">get_active_sheet</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">workbook</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">wb</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="n">parent</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">wb</span> <span class="o">=</span> <span class="n">workbook</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="p">(</span><span class="n">wb</span><span class="o">.</span><span class="n">get_sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span> <span class="ow">or</span> <span class="n">wb</span><span class="o">.</span><span class="n">get_active_sheet</span><span class="p">())</span>
+    <span class="n">max_row</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_highest_row</span><span class="p">()</span>
+    <span class="n">max_col</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">get_highest_column</span><span class="p">()</span>
+    <span class="n">default_style</span> <span class="o">=</span> <span class="n">Style</span><span class="p">()</span>
+    <span class="n">style_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;default&quot;</span><span class="p">:</span><span class="n">default_style</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">preserve_styles</span><span class="p">:</span>
+        <span class="n">style_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">((</span><span class="n">cell</span><span class="o">.</span><span class="n">get_coordinate</span><span class="p">(),</span> <span class="n">cell</span><span class="o">.</span><span class="n">style</span><span class="p">)</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span>
+                <span class="n">ws</span><span class="o">.</span><span class="n">rows</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span>
+                <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">cell</span><span class="o">.</span><span class="n">style</span> <span class="o">!=</span> <span class="n">default_style</span><span class="p">))</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[[</span><span class="n">cell</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ws</span><span class="o">.</span><span class="n">rows</span><span class="p">]</span>
+    <span class="c">#TODO: somehow check to see if first row are titles or not</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">style_dict</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jeffrey Tratner.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

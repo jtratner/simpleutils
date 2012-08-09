@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>simpleutils.simpledict &mdash; jtratner&#39;s simpleutils 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="jtratner&#39;s simpleutils 0.1.0 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for simpleutils.simpledict</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">utilities for handling Python dicts.</span>
+
+<span class="sd">:class:`defaultfunctiondict`:</span>
+
+<span class="sd">* like a default dict, but creates output based upon key instead</span>
+<span class="sd">* Implementation (and suggestion to use override the :meth:`~collections.defaultdict.__missing__` method</span>
+<span class="sd">  of :class:`collections.defaultdict` instead of subclassing dict, are credit `Jochen Ritzel`_</span>
+<span class="sd">  of Stack Overflow</span>
+
+<span class="sd">.. _Jochen Ritzel : http://stackoverflow.com/users/95612/jochen-ritzel</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<div class="viewcode-block" id="defaultfunctiondict"><a class="viewcode-back" href="../../simpledict.html#simpleutils.simpledict.defaultfunctiondict">[docs]</a><span class="k">class</span> <span class="nc">defaultfunctiondict</span><span class="p">(</span><span class="n">defaultdict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; like a defaultdict, but instead takes in a function factory that</span>
+<span class="sd">    takes a single argument -- a key, and returns a value</span>
+<span class="sd">    that dynamically returns a value based upon the given key.</span>
+
+<span class="sd">    Advantage over :meth:`dict.setdefault` : the default is *only* evaluated</span>
+<span class="sd">    as necessary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__missing__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_factory</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_factory</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<div class="viewcode-block" id="dicts_to_list"><a class="viewcode-back" href="../../simpledict.html#simpleutils.simpledict.dicts_to_list">[docs]</a><span class="k">def</span> <span class="nf">dicts_to_list</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">,</span> <span class="n">fieldnames</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">key_sorter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">ignore_keys</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; given an ordered list of fieldnames and an optional key_sorter,</span>
+<span class="sd">    returns (fieldnames, lstoflsts) a list of fieldnames (in order) and the list of dicts as a list of</span>
+<span class="sd">    lists (optional: ignore_keys...list of keys to leave out from dict</span>
+<span class="sd">    conversion)&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">ignore_keys</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ignore_keys</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">fieldnames</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># remove any keys in ignore_keys from fieldnames and convert to tuple</span>
+        <span class="n">fieldnames</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">elem</span> <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">fieldnames</span> <span class="k">if</span> <span class="n">elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore_keys</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">all_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">get_all_keys</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">inst</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Couldn&#39;t grab all keys...probably won&#39;t work.&quot;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;MESSAGE: {!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">MESSAGE</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;ARGS: {!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">inst</span><span class="o">.</span><span class="n">args</span><span class="p">))</span>
+        <span class="n">all_names</span> <span class="o">=</span> <span class="n">lstofdicts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="c"># just get the names that *aren&#39;t* in fieldnames (or ignore keys) already, then sort by</span>
+    <span class="c"># given keyfunction</span>
+    <span class="n">extra_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">all_names</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">),</span>
+        <span class="nb">set</span><span class="p">(</span><span class="n">ignore_keys</span><span class="p">)),</span> <span class="n">key</span> <span class="o">=</span> <span class="n">key_sorter</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">extra_names</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Found additional fieldnames: {!r}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extra_names</span><span class="p">))</span>
+    <span class="n">fieldnames</span> <span class="o">+=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">extra_names</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span> <span class="p">:</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">row</span><span class="p">,</span> <span class="n">dct</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">):</span>
+        <span class="c"># assign each dict, in order, to a row</span>
+        <span class="n">curr</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fieldnames</span><span class="p">):</span>
+            <span class="c"># for each key in fieldnames, store the key from current dict in</span>
+            <span class="c"># the current row. If the dict doesn&#39;t have the particular key,</span>
+            <span class="c"># just keep going</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">curr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">output</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">fieldnames</span><span class="p">,</span> <span class="n">output</span>
+</div>
+<span class="k">def</span> <span class="nf">list_to_dict</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst</span><span class="p">))</span>
+
+<div class="viewcode-block" id="dicts_to_namedtuples"><a class="viewcode-back" href="../../simpledict.html#simpleutils.simpledict.dicts_to_namedtuples">[docs]</a><span class="k">def</span> <span class="nf">dicts_to_namedtuples</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">,</span> <span class="n">classname</span> <span class="o">=</span> <span class="s">&#39;Fields&#39;</span><span class="p">,</span> <span class="n">fieldnames</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">key_sorter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; works exactly the same as convert_dict_to_list, but creates a</span>
+<span class="sd">    namedtuple with the elements used as fieldnames. Numbers converted to</span>
+<span class="sd">    &#39;f&#39;+# (e.g. &#39;1&#39; --&gt; &#39;f1&#39;).</span>
+<span class="sd">    Note that additional namedtuples can be made by using the obj._make</span>
+<span class="sd">    function of any element returned from this function, or by grabbing the class</span>
+<span class="sd">    from :meth:`~object.__class__`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+    <span class="n">fieldnames</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dicts_to_list</span><span class="p">(</span><span class="n">lstofdicts</span><span class="p">,</span> <span class="n">fieldnames</span><span class="o">=</span><span class="n">fieldnames</span><span class="p">,</span>
+            <span class="n">key_sorter</span><span class="o">=</span><span class="n">key_sorter</span><span class="p">)</span>
+    <span class="n">NewClass</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="n">classname</span><span class="p">,</span> <span class="n">fieldnames</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">NewClass</span><span class="o">.</span><span class="n">_make</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jeffrey Tratner.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

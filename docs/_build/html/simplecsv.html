@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>csv utilities &mdash; jtratner&#39;s simpleutils 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="jtratner&#39;s simpleutils 0.1.0 documentation" href="index.html" />
+    <link rel="next" title="xls utilities" href="simplexls.html" />
+    <link rel="prev" title="debugging utils" href="simpledebug.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simplexls.html" title="xls utilities"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="simpledebug.html" title="debugging utils"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-simpleutils.simplecsv">
+<span id="csv-utilities"></span><h1>csv utilities<a class="headerlink" href="#module-simpleutils.simplecsv" title="Permalink to this headline">¶</a></h1>
+<p>simple csv - set of simple utilities for handling csv</p>
+<div class="section" id="for-all-functions">
+<h2>For all functions:<a class="headerlink" href="#for-all-functions" title="Permalink to this headline">¶</a></h2>
+<p>some common keywords are listed for convenience. Only non-None
+keywords are passed.</p>
+</div>
+<div class="section" id="convert-to-csv">
+<h2>Convert to csv:<a class="headerlink" href="#convert-to-csv" title="Permalink to this headline">¶</a></h2>
+<p>in general, can just use default settings, which are of form
+convert_ABC_to_csv(lstofABC[,path) where &#8216;ABC&#8217; is list or dict
+and &#8216;lstofABC&#8217; is a list of lists or dicts. &#8216;path&#8217; is optional.</p>
+<p>if no path given, defaults to inserting the time into the filename</p>
+</div>
+<div class="section" id="read-from-csv">
+<h2>read from csv:<a class="headerlink" href="#read-from-csv" title="Permalink to this headline">¶</a></h2>
+<p>general format:
+read_csv_to_ABC(path) -&gt; ABC
+where path is a path to a csv file and ABC is &#8216;list&#8217; or &#8216;dict&#8217;.
+All keywords for python csv module are accepted, also possible to
+specify a header row to get titles/keys, etc</p>
+<p>All functions work with lists, dicts, or any object that works similarly</p>
+<dl class="function">
+<dt id="simpleutils.simplecsv.convert_dict_to_csv">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">convert_dict_to_csv</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#convert_dict_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.convert_dict_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecated, wrapper for simplecsv.write_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.convert_list_to_csv">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">convert_list_to_csv</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#convert_list_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.convert_list_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>deprecated, wrapper for write_list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.read_csv_to_dict">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">read_csv_to_dict</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#read_csv_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.read_csv_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>deprecated, wrapper for read_to_dict</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.read_csv_to_list">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">read_csv_to_list</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#read_csv_to_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.read_csv_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>deprecated, wrapper for read_to_list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.read_to_dict">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">read_to_dict</tt><big>(</big><em>path</em>, <em>dialect='excel'</em>, <em>delimiter=None</em>, <em>quotechar=None</em>, <em>encoding=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#read_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.read_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads the csv at &#8216;path&#8217; and outputs a dict with keywords from the
+firstline (so, the column titles) any keywords for csvreader can be passed
+through if desired).
+path can be fileobject or system path
+Keywords are listed for convenience, only non-None are kept</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.read_to_list">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">read_to_list</tt><big>(</big><em>path</em>, <em>dialect='excel'</em>, <em>delimiter=None</em>, <em>quotechar=None</em>, <em>encoding=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#read_to_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.read_to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>reads the csv at &#8216;path&#8217; and outputs a list with all lines maintained
+(so, the column titles) any keywords for csvreader can be passed
+through if desired)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.write_dict">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">write_dict</tt><big>(</big><em>lstofdicts</em>, <em>filename=None</em>, <em>header_row=None</em>, <em>fieldnames=None</em>, <em>dialect='excel'</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#write_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.write_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes dict and converts to csv, see csv.DictWriter for more,
+<tt class="docutils literal"><span class="pre">**kwargs</span></tt> are passed on, default filename is
+<tt class="xref py py-func docutils literal"><span class="pre">DictReader(csvfile[,</span> <span class="pre">fieldnames=None[,</span> <span class="pre">restkey=None[,</span>
+<span class="pre">restval=None[,</span> <span class="pre">dialect='excel'[,</span> <span class="pre">*args,</span> <span class="pre">**kwds]]]]])`()</span></tt> Use keyword
+arguments so you don&#8217;t have to worry about position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lstofdicts</strong> &#8211; list of dicts to be converted to csv</li>
+<li><strong>filename</strong> &#8211; path/fileobject/None for storing csv. See
+<a class="reference internal" href="simplefile.html#simpleutils.simplefile.get_fileobject" title="simpleutils.simplefile.get_fileobject"><tt class="xref py py-func docutils literal"><span class="pre">simplefile.get_fileobject()</span></tt></a> for more.</li>
+<li><strong>header_row</strong> (<em>integer</em>) &#8211; if given, pops that item in the list of
+of <tt class="docutils literal"><span class="pre">lstofdicts</span></tt> and uses it as headers (assumes it has a
+<tt class="xref py py-meth docutils literal"><span class="pre">keys()</span></tt> method.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="simpleutils.simplecsv.write_list">
+<tt class="descclassname">simpleutils.simplecsv.</tt><tt class="descname">write_list</tt><big>(</big><em>lst</em>, <em>filename=None</em>, <em>header_row=0</em>, <em>num_columns=None</em>, <em>delimiter=None</em>, <em>quotechar=None</em>, <em>quoting=None</em>, <em>dialect='excel'</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/simpleutils/simplecsv.html#write_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#simpleutils.simplecsv.write_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a list of data (generally list of list) and writes it to a
+file as a csv.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>header_row</strong> &#8211; specifies index where titles are located
+(becomes first row of csv)</li>
+<li><strong>filename</strong> &#8211; default is <tt class="docutils literal"><span class="pre">pretty_time</span></tt>, filename can also be a <tt class="xref py py-class docutils literal"><span class="pre">fileobject</span></tt>
+(passed through <tt class="xref py py-func docutils literal"><span class="pre">get_fileobject()</span></tt>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>All other args passed to <tt class="xref py py-class docutils literal"><span class="pre">writer</span></tt>, args with None are written for convenience
+reminder.
+Default filename is pretty_time(), filename can also be a fileobject</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">csv utilities</a><ul>
+<li><a class="reference internal" href="#for-all-functions">For all functions:</a></li>
+<li><a class="reference internal" href="#convert-to-csv">Convert to csv:</a></li>
+<li><a class="reference internal" href="#read-from-csv">read from csv:</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="simpledebug.html"
+                        title="previous chapter">debugging utils</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="simplexls.html"
+                        title="next chapter">xls utilities</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/simplecsv.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="simplexls.html" title="xls utilities"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="simpledebug.html" title="debugging utils"
+             >previous</a> |</li>
+        <li><a href="index.html">jtratner&#39;s simpleutils 0.1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Jeffrey Tratner.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

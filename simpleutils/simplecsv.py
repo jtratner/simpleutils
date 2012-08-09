@@ -49,10 +49,21 @@ def write_dict(
         fieldnames = None,
         dialect='excel',
         **kwargs):
-    """Takes dict and converts to csv, see csv.DictWriter for more, **kwargs are passed on,
-    default filename is pretty_time().csv
-    csv.DictReader(csvfile[, fieldnames=None[, restkey=None[, restval=None[, dialect='excel'[, *args, **kwds]]]]])
-    Use keyword arguments so you don't have to worry about position"""
+    """Takes dict and converts to csv, see csv.DictWriter for more,
+    ``**kwargs`` are passed on, default filename is
+    :func:`~.simplefile.pretty_time`().csv e.g. call structure:
+    ``csv.DictReader(csvfile[, fieldnames=None[, restkey=None[,
+    restval=None[, dialect='excel'[, *args, **kwds]]]]])`` Use keyword
+    arguments so you don't have to worry about position.
+
+    :param lstofdicts: list of dicts to be converted to csv
+    :param filename: path/fileobject/None for storing csv. See
+        :func:`.simplefile.get_fileobject` for more.
+    :param integer header_row: if given, pops that item in the list of
+        of ``lstofdicts`` and uses it as headers (assumes it has a
+        :meth:`keys` method.
+
+    """
     # store defaults in kwargs
     f = get_fileobject(filename,mode='wb',ext='.csv')
     try:
@@ -107,10 +118,14 @@ def write_list(
         dialect = 'excel',
         **kwargs):
     """Takes a list of data (generally list of list) and writes it to a
-    file as a csv. 
-    *header_row* specifies index where titles are located
-        (becomes first row of csv) 
-    All args passed to csv, args with None are written for convenient
+    file as a csv.
+
+    :param header_row: specifies index where titles are located
+        (becomes first row of csv)
+    :param filename: default is ``pretty_time``, filename can also be a :class:`fileobject`
+        (passed through :func:`~simplefile.get_fileobject`)
+
+    All other args passed to :class:`~csv.writer`, args with None are written for convenience
     reminder.
     Default filename is pretty_time(), filename can also be a fileobject"""
     # store defaults in kwargs
@@ -133,7 +148,7 @@ def write_list(
     finally:
         f.close()
         return filename
-        
+
 def read_csv_to_list(*args, **kwargs):
     """deprecated, wrapper for read_to_list"""
     return read_to_list(*args, **kwargs)
@@ -145,16 +160,16 @@ def read_to_list(
         quotechar = None,
         encoding = None,
         **kwargs):
-    """ reads the csv at 'path' and outputs a list with all lines maintained 
-    (so, the column titles) any keywords for csvreader can be passed 
+    """ reads the csv at 'path' and outputs a list with all lines maintained
+    (so, the column titles) any keywords for csvreader can be passed
     through if desired)"""
     # store defaults
     kwargs['dialect'] = dialect
     if delimiter is not None: kwargs['delimiter'] = delimiter
     if quotechar is not None: kwargs['quotechar'] = quotechar
-    
+
     f = get_fileobject(path,mode='rb')
-    
+
     try:
         mycsvreader = csv.reader(f,**kwargs)
         # if an encoding was specified, decodes the characters and return
@@ -176,8 +191,8 @@ def read_to_dict(
         quotechar=None,
         encoding = None,
         **kwargs):
-    """ reads the csv at 'path' and outputs a dict with keywords from the 
-    firstline (so, the column titles) any keywords for csvreader can be passed 
+    """ reads the csv at 'path' and outputs a dict with keywords from the
+    firstline (so, the column titles) any keywords for csvreader can be passed
     through if desired).
     path can be fileobject or system path
     Keywords are listed for convenience, only non-None are kept"""
