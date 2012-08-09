@@ -1,62 +1,41 @@
 """
 simple csv - set of simple utilities for handling csv
-FOR ALL FUNCTIONS:
-    some common keywords are listed for convenience. Only non-None
-    keywords are passed.
 
-CONVERT TO CSV: 
-    in general, can just use default settings, which are of form
-    convert_ABC_to_csv(lstofABC[,path) where 'ABC' is list or dict
-    and 'lstofABC' is a list of lists or dicts. 'path' is optional.
+For all functions:
+==================
 
-    if no path given, defaults to inserting the time into the filename
 
-READ FROM CSV:
-    general format:
-    read_csv_to_ABC(path) -> ABC
-    where path is a path to a csv file and ABC is 'list' or 'dict'.
-    All keywords for python csv module are accepted, also possible to
-    specify a header row to get titles/keys, etc
+some common keywords are listed for convenience. Only non-None
+keywords are passed.
+
+Convert to csv:
+================
+
+in general, can just use default settings, which are of form
+convert_ABC_to_csv(lstofABC[,path) where 'ABC' is list or dict
+and 'lstofABC' is a list of lists or dicts. 'path' is optional.
+
+if no path given, defaults to inserting the time into the filename
+
+read from csv:
+==============
+
+general format:
+read_csv_to_ABC(path) -> ABC
+where path is a path to a csv file and ABC is 'list' or 'dict'.
+All keywords for python csv module are accepted, also possible to
+specify a header row to get titles/keys, etc
 
 All functions work with lists, dicts, or any object that works similarly
 """
 
-    
+
 
 import csv
-from simpletime import pretty_time
-from simplesets import get_all_keys
+from .simplesets import get_all_keys
+from .simplefile import get_fileobject
 import sys
 
-def make_filename(filename=None,ext='', prefix='', name_gen=pretty_time,
-        append_time = False):
-    if filename is None: 
-        if append_time and name_gen is pretty_time:
-            filename = ''
-        else:
-            filename = name_gen()
-    if append_time:
-        filename = filename + pretty_time()
-    return prefix+filename+ext
-
-def get_fileobject(filename, mode='wb', ext='.csv',prefix=''):
-    """ returns a fileobject for given input.
-    filename can be: path - str to a path on system
-                     fileobject - in which case just returned
-                    None - uses prettytime to make
-    mode - mode for open
-    prefix,ext - added to beginning or end of prettytime"""
-    # if it's a string, get the path
-    if isinstance(filename,str):
-        f = open(filename,mode)
-    # if it is not None, assume it's a file object
-    elif filename is not None:
-        f = filename
-    # otherwise just use default
-    else:
-        filename = make_filename(filename=filename, ext=ext, prefix=prefix)
-        f = open(filename,mode)
-    return f
 
 def convert_dict_to_csv(
         *args, **kwargs):
